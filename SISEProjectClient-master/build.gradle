@@ -1,0 +1,75 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+mainClassName = 'com.insure.client.AppClient'
+
+repositories {
+    //mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+//    compile "istack-commons-runtime"
+//    compile "istack-commons-tools"
+//    compile "javax.activation"
+//    compile "javax.annotation-api"
+//    compile "javax.servlet-api"
+//    compile "jaxb-jxc"
+//    compile "jaxb-osgi"
+//    compile "jaxb-runtime"
+//    compile "jaxb-xjc"
+//    compile "jaxr-api"
+//    compile "jaxws-rt"
+//    compile "jaxws-tools"
+//    compile "policy"
+//    compile "stax-ex"
+//    compile "streambuffer"
+//    compile "webservices-api"
+//    compile "webservices-rt"
+
+}
+
+
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.insure.client.AppClient',
+                'Implementation-Title': 'Soap client example',
+                'Implementation-Version': version
+        )
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    //with jar
+
+}
+
+
+sourceSets {
+    main {
+        java {
+            // include self written and generated code
+            srcDirs 'src'
+        }
+    }
+    // in future add test configuration here
+}
+
+
+//delete generated source code when clean
+clean {
+    delete "build"
+}
+
+
